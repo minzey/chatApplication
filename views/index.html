@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Chat Application</title>
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="css/screen.css">
+    <link rel="stylesheet" href="css/privateChat.css">
+    <link rel="stylesheet" href="css/onlineUsers.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <!--<script src="/socket.io/socket.io.js"></script>-->
+  <!--<script src="https://code.jquery.com/jquery-1.11.1.js"></script>-->
+  
+    
+  <body>
+    
+    <div class="mainContainer">
+      <div class="loginContainer">
+        <div class="heading">REALCHAT</div>
+        <div class="avatars">
+          <div class="row1">
+            <img src="images/avatar-1.png">
+            <img src="images/avatar-2.png">
+            <img src="images/avatar-3.png">
+          </div>
+          <div class="row2">
+            <img src="images/avatar-4.png">
+            <img src="images/avatar-5.png">
+            <img src="images/avatar-6.png">
+          </div>
+          <div class="row3">
+            <img src="images/avatar-7.png">
+            <img src="images/avatar-8.png">
+            <img src="images/avatar-9.png">
+          </div>
+        </div>
+        <div class="login">
+          <form class="userInfo">
+            
+                <input type="text" autocomplete="off" placeholder="Username" id="name">
+                <button type="submit">LOGIN</button>
+            
+          </form>   
+        </div>
+      </div>   
+    </div>
+  </body>
+<script src="js/jquery.js" type="text/javascript"></script>
+
+
+<script src="js/jsrender.js" type="text/javascript"></script>
+<script src="js/jsviews.js" type="text/javascript"></script>
+<script src="js/index.js" type="text/javascript"></script>
+
+  <script id="privateChatTemplate" type="text/x-jsrender">
+  {^{on 'click' '.submitPrivate' sendPrivateMessage}}
+  
+    
+      <div class="chatHeader">
+        <div>{^{>online[currentPrivate].name}}</div>
+        <img class="back" src="images/navigate-before.png" data-link="{on ~navigateBefore}">
+      </div>
+      <div class="chatContainer">
+        <ul id="messages">
+        
+          {^{for online[currentPrivate].chat ~userAvatar=online[currentPrivate].avatar ~myAvatar=myAvatar}}
+            {^{if type=="sent"}}
+            <div class="item">
+              <div class="sentdiv">      
+                <li class="sent">{^{>content}}</li>
+                <li class="time">{^{>time}}</li>
+              </div>
+              {{:~myAvatar}}
+            </div>
+            {{else}}
+            <div class="item">
+              {{:~userAvatar}}
+              <div class="receivediv">
+                <li class="receive">{^{>content}}</li>
+                <li class="time">{^{>time}}</li>
+              </div>
+            </div>
+            {{/if}}
+          {{/for}}
+        </ul>
+      </div>
+      <div class="messageContainer">
+        
+              
+              <input type="text" id="mprivate" autocomplete="off" placeholder="Enter chat message" data-link="{on 'keyup' ~checkKeyPress}">
+              <!--<button type="submit" class="submitPrivate">Send private</button>-->
+              <!--<i class="fa fa-paper-plane fa-4x submitPrivate" aria-hidden="true"></i>-->
+              <img class="submitPrivate" src="/images/send.png">
+              <!--<button class="test">yay</button>-->
+        
+      </div>
+    
+  {{/on}}
+  
+  </script>
+
+
+  <script id="chatTemplate" type="text/x-jsrender">
+      <div class="loggedinUser">
+        <img class="userAvatar">
+        <div>{^{>name}}</div>
+      </div>
+      <div class="onlineUsers">
+        <div class="onlineHeading">Active Now</div>
+        <div class="onlineIndicator"></div>
+        {^{for online}}
+          <li class="onlineUser" data-link="{on ~navigatePrivateChat}">
+            {^{:avatar}}
+            <div>{^{>name}}</div>
+            {^{if unseen > "0"}}
+            <div class="unseen">{^{>unseen}}</div>
+            {{/if}}
+          </li>
+        {{else}}
+          <img class="sadSmiley" src="images/sadSmiley.png">
+          <div class="inviteLabel1">No friends online!</div>
+          <div class="inviteLabel2">Invite your friends now</div>
+        {{/for}}
+      </div>
+  </script>
+</html>
